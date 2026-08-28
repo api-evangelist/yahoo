@@ -1,0 +1,97 @@
+specification: API Commons Packages
+specificationVersion: '0.1'
+provider: Yahoo
+providerId: yahoo
+generated: '2026-08-28'
+method: searched
+source: >-
+  registry.npmjs.org , pypi.org , https://developer.yahoo.com/ ,
+  https://help.yahooinc.com/dsp-api/docs/postman-toolkit , https://github.com/yahoo
+description: >-
+  Client-library inventory for the Yahoo API surface. THE HEADLINE FINDING IS AN ABSENCE - Yahoo
+  publishes no first-party SDK, in any language, for any of its APIs. The github.com/yahoo
+  organisation is large and active (Elide, Vespa, Screwdriver, Athenz, Fluxible, CMAK) but every
+  repository in it is infrastructure or front-end tooling; none is a client for the Fantasy
+  Sports, DSP Traffic, DSP Reporting, Conversion or DataX APIs. Yahoo's own answer to "how do I
+  call this" is a Postman collection, not a library. Every package below is community-maintained
+  and carries official:false. No SDKs pointer is emitted in apis.yml, because sdk_count would
+  otherwise credit Yahoo with libraries other people wrote.
+official_sdk_count: 0
+packages:
+  - name: yahoo-fantasy
+    registry: npm
+    url: https://www.npmjs.com/package/yahoo-fantasy
+    language: JavaScript
+    api: Yahoo Fantasy Sports API
+    official: false
+    maintainer: whatadewitt (community)
+    repository: https://github.com/whatadewitt/yfsapi
+    version: 5.3.0
+    published: '2024-04-19'
+    note: >-
+      The most-used Node wrapper for the Fantasy Sports API. Last release 2024-04-19, more than
+      two years stale at the time of this pass.
+  - name: yahoo-fantasy-api
+    registry: pypi
+    url: https://pypi.org/project/yahoo-fantasy-api/
+    language: Python
+    api: Yahoo Fantasy Sports API
+    official: false
+    maintainer: spilchen (community)
+    repository: http://github.com/spilchen/yahoo_fantasy_api
+    version: 2.12.3
+    published: '2026-04-03'
+    note: The most currently maintained Fantasy Sports client found in any registry.
+  - name: yfpy
+    registry: pypi
+    url: https://pypi.org/project/yfpy/
+    language: Python
+    api: Yahoo Fantasy Sports API
+    official: false
+    maintainer: uberfastman (community)
+    version: 17.0.0
+    published: '2025-09-14'
+    note: Python wrapper with response-model classes over the Fantasy Sports XML/JSON payloads.
+  - name: yahoo-oauth
+    registry: pypi
+    url: https://pypi.org/project/yahoo-oauth/
+    language: Python
+    api: Yahoo OAuth 2.0 / identity
+    official: false
+    maintainer: community
+    version: 2.1.1
+    published: '2024-12-17'
+    note: Handles the three-legged Yahoo OAuth dance; commonly paired with the Fantasy clients.
+first_party_distribution:
+  - name: Yahoo DSP API Postman collection
+    kind: postman-collection
+    registry: postman
+    url: >-
+      https://www.postman.com/yahoodsp/workspace/public/collection/1195613-217c82de-af78-40c1-a11d-08a4191b27de
+    workspace: https://www.postman.com/yahoodsp/workspace/public
+    official: true
+    version: null
+    published: null
+    note: >-
+      Yahoo's only first-party machine-readable client artifact. Published in a public Postman
+      workspace under the yahoodsp account and covering both the Trafficking and Reporting
+      collections, with a pre-request script that mints the JWT access token. Postman publishes no
+      version or release date for a shared collection, so both fields are a checked null rather
+      than an unrecorded gap - a consumer cannot tell which revision they imported either.
+    status: 200
+registries_checked:
+  - registry: npm
+    result: no first-party Yahoo API client (scope searches and @yahoo/@yahooinc candidates all 404)
+  - registry: pypi
+    result: no first-party Yahoo API client
+  - registry: github.com/yahoo
+    result: >-
+      100+ public repositories, all infrastructure/front-end OSS; no API client for a Yahoo
+      commercial API
+  - registry: maven-central
+    result: not probed in this pass
+  - registry: nuget
+    result: not probed in this pass
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

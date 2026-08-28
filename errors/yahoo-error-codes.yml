@@ -1,0 +1,148 @@
+specification: API Commons Error Catalog
+specificationVersion: '0.1'
+provider: Yahoo
+providerId: yahoo
+generated: '2026-08-28'
+method: searched
+source: >-
+  https://help.yahooinc.com/dsp-api/docs/error-codes ,
+  https://help.yahooinc.com/dsp-api/docs/rate-limits ,
+  https://help.yahooinc.com/datax/docs/taxonomy-error-codes ,
+  https://help.yahooinc.com/datax/docs/user-audience-data-error-codes
+docs:
+  - https://help.yahooinc.com/dsp-api/docs/error-codes
+format: vendor-json
+rfc9457: false
+description: >-
+  Yahoo's published error registry. The DSP Reporting API documents a fixed E-prefixed error-code
+  table mapped to HTTP status codes; the DSP Traffic API returns a different envelope carrying a
+  validationErrors[] array with a propertyName naming the offending field or exhausted quota
+  window. Neither surface uses RFC 9457 application/problem+json, and neither publishes a
+  machine-readable schema for the envelope.
+envelopes:
+  - api: Yahoo DSP Traffic API
+    content_type: application/json
+    shape:
+      response: null
+      errors:
+        httpStatusCode: integer
+        message: string or null
+        validationErrors:
+          - message: string
+            propertyName: string
+    example_source: https://help.yahooinc.com/dsp-api/docs/rate-limits
+    note: >-
+      On success the same envelope carries the payload in response and errors is null. On a
+      rate-limit rejection propertyName carries the window token, e.g. GET_PER_MINUTE.
+  - api: Yahoo DSP Reporting API
+    content_type: application/json
+    shape:
+      errorCode: string
+      responseCode: integer
+      message: string
+    example_source: https://help.yahooinc.com/dsp-api/docs/error-codes
+problem_types:
+  - code: E0013
+    status: 401
+    title: Unauthorized
+    cause: The user does not have access to DSP.
+    remediation: Have a User Ops role holder grant the user access to the seat.
+  - code: E0013
+    status: 401
+    title: Unauthorized API access
+    cause: >-
+      The user does not have the API flag enabled and can only use the DSP UI, not the API
+      directly.
+    remediation: Enable API access for the user in Seat Settings > User in the DSP UI.
+  - code: E0013
+    status: 401
+    title: Unauthorized, no permission to access seat ID
+    cause: The caller requested data for a seat ID it has no permission on.
+    remediation: Request the seat data only for seats the authenticated user is provisioned on.
+  - code: E0205
+    status: 401
+    title: Unauthorized, access token expired
+    cause: The OAuth access token has expired.
+    remediation: Request a refreshed access token from the token endpoint and retry.
+  - code: E0047
+    status: 401
+    title: User ID mismatch. Access denied
+    cause: The authorized user ID does not match the user ID in the payload.
+    remediation: Send the payload user ID that matches the token's subject.
+  - code: E0078
+    status: 400
+    title: Malformed request
+    cause: The JSON request body is malformed.
+    remediation: Validate the JSON before sending.
+  - code: E0205
+    status: 400
+    title: Report rows exceed allowed limit
+    cause: The expected row count exceeds the maximum allowed.
+    remediation: >-
+      Narrow the date range, dimensions or metrics, or ask the account manager to raise the 500K
+      row ceiling.
+    note: >-
+      Yahoo reuses E0205 for two distinct conditions at two different HTTP statuses; this is a
+      real ambiguity in the published table, not a transcription error.
+  - code: E0006
+    status: 422
+    title: Report object not found
+    cause: No report exists for the supplied customer report ID.
+    remediation: Re-create the report or check the customerReportId.
+  - code: E0042
+    status: 422
+    title: Malformed request - <field name>
+    cause: A field in the request payload has an invalid value (example given - currency ID).
+    remediation: Correct the named field.
+  - code: E0200
+    status: 422
+    title: Requests Per Minute limit reached. Please try again later.
+    cause: More reporting requests per minute than the seat allows.
+    remediation: Back off and retry; see rate-limits/yahoo-rate-limits.yml.
+  - code: E0202
+    status: 422
+    title: Total row count limit for the day reached.
+    cause: The seat has consumed its 500,000 reporting rows for the day.
+    remediation: Retry the next day or request a higher ceiling from the account manager.
+  - code: E0203
+    status: 422
+    title: You have reached the daily request limit for your seat.
+    cause: More report requests than the seat's daily allowance.
+    remediation: Retry the next day or request a higher ceiling.
+  - code: E0204
+    status: 422
+    title: You are requesting data for a restricted dimension combo.
+    cause: >-
+      Restricted dimensions were requested outside the allowed date range or interval.
+    remediation: Check the Limits page for the restricted dimension and date-range combinations.
+  - code: E0206
+    status: null
+    title: Report generation took longer than allowed limit of {0} hours.
+    cause: The report exceeded the generation time ceiling.
+    remediation: Reduce the report scope. Yahoo publishes no HTTP status for this code.
+  - code: E0059
+    status: 500
+    title: Failed to store generated report.
+    cause: The report generated but could not be saved.
+    remediation: Retry the report request.
+  - code: E0101
+    status: 500
+    title: DSP Reporting API is having issues, please try again later.
+    cause: General reporting-API unavailability.
+    remediation: Retry with exponential backoff.
+  - code: null
+    status: 500
+    title: Internal Server Error
+    cause: Unclassified server-side failure.
+    remediation: Retry later.
+error_count: 17
+gaps:
+  - >-
+    The DSP Traffic API publishes no enumerated error-code registry at all - only the envelope
+    shape and the rate-limit example. A caller cannot switch on a stable Traffic API error code.
+  - >-
+    DataX publishes separate Taxonomy and User/Audience error-code pages that were not harvested
+    into this file in this pass.
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

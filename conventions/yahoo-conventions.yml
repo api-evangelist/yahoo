@@ -1,0 +1,179 @@
+specification: API Commons Conventions
+specificationVersion: '0.1'
+provider: Yahoo
+providerId: yahoo
+generated: '2026-08-28'
+method: searched
+source: >-
+  https://help.yahooinc.com/dsp-api/docs/authorization-and-headers ,
+  https://help.yahooinc.com/dsp-api/docs/about-the-traffic-api ,
+  https://help.yahooinc.com/dsp-api/docs/campaigns ,
+  https://help.yahooinc.com/dsp-api/docs/rate-limits ,
+  https://help.yahooinc.com/dsp-api/docs/error-codes ,
+  https://sports.yahoo.com/developer/docs/
+description: >-
+  Cross-cutting runtime semantics for the Yahoo API surface, read from the published docs. Yahoo
+  ships two very different conventions: an XML-first, matrix-parameter, sub-resource-composition
+  style on the Fantasy Sports API, and a conventional JSON CRUD style with query pagination on
+  the DSP Traffic API. Neither documents idempotency keys, request-id tracing, or a retry
+  contract, and neither publishes an OpenAPI, so none of this is machine-discoverable.
+auth_style:
+  - api: Yahoo Fantasy Sports API
+    style: OAuth 2.0 bearer token in the Authorization header
+    detail: Three-legged authorization code flow against api.login.yahoo.com.
+  - api: Yahoo DSP Traffic API
+    style: proprietary header pair
+    detail: >-
+      X-Auth-Method: OAuth2 plus X-Auth-Token: <access token>, with Content-Type: application/json.
+      The Authorization header is not used. Generic OAuth2 client libraries therefore need a
+      custom token placement, which is the single most likely integration failure on this API.
+idempotency:
+  supported: unknown
+  header: null
+  scope: null
+  retention: null
+  note: >-
+    No idempotency key, no request deduplication and no safe-retry contract is documented on any
+    Yahoo API. POST /traffic/campaigns has no published dedupe guarantee, so a client that retries
+    a timed-out create risks a duplicate campaign. Recorded as an honest gap, not as absent
+    support - Yahoo simply does not say.
+pagination:
+  - api: Yahoo DSP Traffic API
+    style: page-and-limit query parameters
+    params:
+      page: 1-based page number
+      limit: page size
+      sort: field to sort on
+      dir: sort direction
+      query: free-text filter
+      startTime: ISO-8601 lower bound
+      endTime: ISO-8601 upper bound
+    example: >-
+      GET /traffic/campaigns?accountId={accountId}&query={query}&page={page}&limit={limit}&sort={sort}&dir={dir}&startTime={startTime}&endTime={endTime}
+    response_fields: not documented (no total count or next-page link is described)
+    source: https://help.yahooinc.com/dsp-api/docs/campaigns
+  - api: Yahoo Fantasy Sports API
+    style: matrix parameters on collections
+    params:
+      start: 0-based offset
+      count: number of items
+    note: >-
+      Collections are filtered and paged with semicolon matrix parameters appended to the path
+      segment, e.g. /league/{league_key}/players;start=25;count=25.
+    source: https://sports.yahoo.com/developer/docs/
+selection_and_composition:
+  - api: Yahoo Fantasy Sports API
+    mechanism: URI sub-resource composition
+    detail: >-
+      Rather than an expand parameter, related data is appended as path segments -
+      /league/461.l.1000/players;player_keys=461.p.30121/stats returns the player nested inside
+      the league. Multiple resources are batched with ;{resource}_keys=k1,k2 matrix filters.
+    source: https://sports.yahoo.com/developer/docs/
+metadata:
+  supported: false
+  note: No arbitrary customer metadata / custom-field bag is documented on any Yahoo API.
+request_tracing:
+  request_id_header: null
+  note: >-
+    No request-id or correlation-id header is documented. The DSP 404 body does echo an internal
+    requestId (observed on a live probe of an unknown /traffic path), but it is undocumented and
+    not published as a support contract. The Traffic API auditlog endpoint provides after-the-fact
+    change attribution at seat, campaign, package and line level, which is the closest thing to a
+    trace surface Yahoo offers.
+  audit_log: https://help.yahooinc.com/dsp-api/docs/audit-logs
+hypermedia:
+  - api: Yahoo Ad Tech DataX API
+    style: typed link relations
+    detail: >-
+      DataX responses carry custom link relation URIs under https://datax.yahooapis.com/rels/
+      (rels/taxonomy, rels/stats, rels/errors, rels/retry/errors) alongside opaque
+      https://datax.yahooapis.com/v1/link/{token} resource links. It is the only Yahoo API surface
+      with a hypermedia affordance; the DSP and Fantasy Sports APIs return no links.
+    source: https://help.yahooinc.com/datax/docs/post-audience
+versioning:
+  detail: See lifecycle/yahoo-lifecycle.yml. Fantasy Sports pins /fantasy/v2; DSP Traffic is unversioned.
+error_envelope:
+  rfc9457: false
+  cross_reference: errors/yahoo-error-codes.yml
+  by_api:
+    - api: Yahoo DSP Traffic API
+      shape: '{ response, errors: { httpStatusCode, message, validationErrors: [ { message, propertyName } ] } }'
+    - api: Yahoo DSP Reporting API
+      shape: E-prefixed error code plus HTTP status; see errors/yahoo-error-codes.yml.
+    - api: Yahoo Fantasy Sports API
+      shape: >-
+        XML fault document in the yahoo namespace -
+        yahoo:error with xmlns:yahoo='http://yahooapis.com/v1/base.rng' wrapping yahoo:description.
+      observed: 'HTTP 401 on GET https://fantasysports.yahooapis.com/fantasy/v2/game/nfl (unauthenticated)'
+rate_limit_signaling:
+  headers: none
+  detail: >-
+    No X-RateLimit-* or Retry-After headers. Budget must be polled out-of-band at
+    GET /traffic/ratelimit. Exhaustion returns 429 (Traffic) or 422 with E0200/E0202/E0203
+    (Reporting).
+  cross_reference: rate-limits/yahoo-rate-limits.yml
+content_negotiation:
+  - api: Yahoo Fantasy Sports API
+    default: XML
+    alternatives: JSON via the ?format=json query parameter
+    note: XML is the default and the documented examples are XML throughout.
+  - api: Yahoo DSP Traffic API
+    default: JSON
+  - api: Yahoo DSP Reporting API
+    default: JSON request; the report itself is delivered as a CSV file at a URL valid for 24 hours.
+reversibility:
+  grade: documented
+  grade_basis: >-
+    A reversal path exists and is documented as a status transition, but Yahoo publishes no window
+    for any reversal, so this cannot be graded verified.
+  write_surfaces:
+    - api: Yahoo DSP Traffic API
+      write_ops: POST and PUT on /traffic/campaigns, /traffic/lines, /traffic/ads, /traffic/audiences and peers
+      reversal:
+        operation: 'PUT /traffic/campaigns/{id} with status set back to PAUSED or INACTIVE'
+        kind: state-transition
+        window: not stated
+        note: >-
+          Yahoo states plainly that "the DSP Traffic API does not support the deletion of
+          campaigns" - there is no destructive delete to undo. Allowed status values are ACTIVE,
+          PAUSED and INACTIVE, with ARCHIVED among the read-only returned states. Reversing an
+          activation is therefore a status write, not a cancel/undo operation, and it does not
+          reverse spend already delivered.
+        source: https://help.yahooinc.com/dsp-api/docs/campaigns
+    - api: Yahoo DSP Traffic API
+      write_ops: 'budget schedule deletion via isScheduleDeleted on PUT /traffic/campaigns/{id}'
+      reversal:
+        operation: none published
+        kind: none
+        window: not stated
+        note: >-
+          Only future schedules in a multi-schedule campaign can be deleted; Yahoo does not
+          document restoring a deleted schedule.
+        source: https://help.yahooinc.com/dsp-api/docs/campaigns
+    - api: Yahoo Conversion API
+      write_ops: 'POST https://batch.datax.yahoo.com/v1/events/{pixelId}'
+      reversal:
+        operation: none published
+        kind: none
+        window: not stated
+        note: >-
+          Conversion events are fire-and-forget measurement posts; no retraction, void or
+          correction endpoint is documented.
+    - api: Yahoo Fantasy Sports API
+      write_ops: 'roster changes and transactions (add/drop, trade) under /league/{key}/transactions'
+      reversal:
+        operation: >-
+          Trades and waiver claims carry a lifecycle state (pending_trade, waiver) that can be
+          rejected or cancelled through the transaction resource.
+        kind: state-transition
+        window: not stated
+        note: >-
+          The transaction states are documented but Yahoo publishes no cancellation window; league
+          settings, not the API docs, govern how long a pending trade stands.
+        source: https://sports.yahoo.com/developer/docs/
+  dry_run_mode:
+    supported: false
+    note: No preview, validate-only or dry-run mode is documented on any Yahoo write surface.
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

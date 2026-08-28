@@ -1,0 +1,55 @@
+specification: API Commons Components
+specificationVersion: '0.1'
+provider: Yahoo
+providerId: yahoo
+generated: '2026-08-28'
+method: searched
+source: >-
+  https://developer.yahoo.com/sign-in-with-yahoo/ ,
+  https://help.yahooinc.com/connect-id/docs/integrating-with-yahoo-connectid ,
+  https://help.yahooinc.com/llms.txt
+description: >-
+  Client-side and embeddable surfaces Yahoo ships alongside its APIs. These are integration
+  modules and hosted flows rather than a component library - Yahoo publishes no design system or
+  npm-distributed element set for developers.
+families:
+  - name: Sign In With Yahoo
+    kind: hosted-auth-flow
+    docs: https://developer.yahoo.com/sign-in-with-yahoo/
+    detail: >-
+      Prebuilt hosted sign-in and consent screens on api.login.yahoo.com plus a branded button,
+      backed by the OpenID Connect deployment documented in authentication/yahoo-authentication.yml.
+    loader: null
+  - name: Yahoo ConnectID
+    kind: client-side-identity-module
+    docs: https://help.yahooinc.com/connect-id/docs/integrating-with-yahoo-connectid
+    detail: >-
+      A publisher-side identity module with several documented integration methods rather than one
+      package - a Prebid.js user-id submodule, a direct JavaScript method, a Google Secure Signals
+      integration, and a server-to-server method with its own access-token troubleshooting guide.
+      Also documented through LiveRamp ATS, Amazon CxM and Magnite Control Center.
+    methods:
+      - prebid
+      - javascript
+      - google-secure-signals
+      - server-to-server
+      - liveramp-ats
+      - amazon-cxm
+      - magnite-control-center
+    loader: >-
+      Distributed inside Prebid.js and partner platforms; Yahoo publishes no standalone npm package
+      (probed @yahoo/connectid, @yahooinc/connectid, connectid - all absent from npm).
+  - name: Yahoo Dot Pixel
+    kind: tracking-tag
+    docs: https://help.yahooinc.com/dsp-api/docs/pixels
+    detail: >-
+      The browser-side tag whose server-side successor is the Yahoo Conversion API. Documented
+      alongside a Tealium template implementation.
+    loader: null
+component_count: 3
+note: >-
+  Recorded as real but thin. None of these is versioned, none is published to a package registry,
+  and none has a machine-readable manifest.
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

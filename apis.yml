@@ -1,57 +1,297 @@
 aid: yahoo
 name: Yahoo
 description: >-
-  The Fantasy Sports APIs provide URIs used to access fantasy sports data. Currently
-  the APIs support retrieval of Fantasy Football, Baseball, Basketball, and Hockey
-  data including game, league, team, and player information. The APIs are based on
-  a RESTful model. Therefore, resources like game, league, team, player etc. and collections
-  like games, leagues, teams, players form the building blocks for these APIs.
+  Yahoo is a consumer internet and advertising-technology company operating Yahoo Mail, Yahoo
+  Finance, Yahoo Sports and Yahoo Search alongside one of the largest independent demand-side
+  platforms in programmatic advertising. Its public API surface splits cleanly in two. On the
+  consumer side, the Yahoo Fantasy Sports API exposes fantasy football, baseball, basketball and
+  hockey game, league, team, player, roster and transaction data over a composed URI tree at
+  fantasysports.yahooapis.com, secured by a three-legged OAuth 2.0 flow against the Yahoo identity
+  service, which itself publishes a full OpenID Connect discovery document. On the enterprise
+  side, Yahoo Ad Tech ships the DSP Traffic API for programmatic campaign management, the DSP
+  Reporting API for large-scale campaign measurement, the server-to-server Yahoo Conversion API,
+  and the DataX API for audience and taxonomy exchange with data partners - all gated behind an
+  existing DSP seat or a partner onboarding agreement and authenticated with a two-legged
+  client-credentials JWT flow. Yahoo publishes no OpenAPI for any of these surfaces, distributing
+  a public Postman collection and an llms.txt documentation index instead.
 type: Index
 accessModel:
-  pricing: freemium
-  onboarding: unknown
+  pricing: gated
+  onboarding: application
   trial: false
   try_now: false
   public: false
-  label: Freemium
-  confidence: medium
+  label: Application or Customer Gated
+  confidence: high
   source:
   - plans
-  generated: '2026-07-22'
-  method: derived
+  - docs
+  generated: '2026-08-28'
+  method: searched
 position: Consumer
 access: 3rd-Party
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/yahoo.png
-tags: []
+tags:
+  - Advertising
+  - Programmatic Advertising
+  - Demand Side Platform
+  - Fantasy Sports
+  - Sports Data
+  - Identity
+  - OpenID Connect
+  - OAuth
+  - Audience Data
+  - Media
+  - Reporting
+  - Conversion Tracking
 created: '2025-02-08'
-modified: '2026-03-16'
+modified: '2026-08-28'
 url: >-
   https://raw.githubusercontent.com/api-evangelist/yahoo/refs/heads/main/apis.yml
 specificationVersion: '0.23'
 common:
-  - type: VulnerabilityDisclosure
-    url: security/yahoo-vulnerability-disclosure.yml
-  - type: DomainSecurity
-    url: security/yahoo-domain-security.yml
+  - type: Website
+    url: https://www.yahoo.com/
+  - type: DeveloperPortal
+    url: https://developer.yahoo.com/
+  - type: Documentation
+    url: https://developer.yahoo.com/api/
+  - type: GettingStarted
+    url: https://developer.yahoo.com/oauth2/guide/
+  - type: SignUp
+    url: https://developer.yahoo.com/apps/create/
+  - type: Support
+    url: https://yahoo.uservoice.com/forums/182455-yahoo-developer-network
+  - type: Blog
+    url: https://developer.yahoo.com/blogs/
+  - type: TermsOfService
+    url: https://policies.yahoo.com/us/en/yahoo/terms/product-atos/apiforydn/index.htm
+  - type: PrivacyPolicy
+    url: https://legal.yahoo.com/us/en/yahoo/privacy/products/developer/index.html
+  - type: Postman
+    url: https://www.postman.com/yahoodsp/workspace/public
   - type: GitHubOrganization
     url: https://github.com/yahoo
   - type: LinkedIn
     url: https://www.linkedin.com/company/yahoo
+  - type: Security
+    url: security/yahoo-vulnerability-disclosure.yml
+  - type: VulnerabilityDisclosure
+    url: security/yahoo-vulnerability-disclosure.yml
+  - type: DomainSecurity
+    url: security/yahoo-domain-security.yml
+  - type: SecurityTxt
+    url: well-known/yahoo-security.txt
+  - type: WellKnown
+    url: well-known/yahoo-well-known.yml
+  - type: LLMsTxt
+    url: llms/yahoo-llms.txt
+  - type: Authentication
+    url: authentication/yahoo-authentication.yml
+  - type: OAuthScopes
+    url: scopes/yahoo-scopes.yml
+  - type: RateLimits
+    url: rate-limits/yahoo-rate-limits.yml
+  - type: Plans
+    url: plans/yahoo-plans-pricing.yml
+  - type: ErrorCatalog
+    url: errors/yahoo-error-codes.yml
+  - type: Lifecycle
+    url: lifecycle/yahoo-lifecycle.yml
+  - type: Deprecation
+    url: lifecycle/yahoo-lifecycle.yml
+  - type: ChangeLog
+    url: changelog/yahoo-changelog.yml
+  - type: Conventions
+    url: conventions/yahoo-conventions.yml
+  - type: Conformance
+    url: conformance/yahoo-conformance.yml
+  - type: Packages
+    url: packages/yahoo-packages.yml
+  - type: DataModel
+    url: data-model/yahoo-data-model.yml
+  - type: Components
+    url: components/yahoo-components.yml
 apis:
   - aid: yahoo:yahoo
-    name: Yahoo
+    name: Yahoo Fantasy Sports API
     description: >-
-      The Fantasy Sports APIs provide URIs used to access fantasy sports data. Currently
-      the APIs support retrieval of Fantasy Football, Baseball, Basketball, and Hockey
-      data including game, league, team, and player information. The APIs are based
-      on a RESTful model. Therefore, resources like game, league, team, player etc.
-      and collections like games, leagues, teams, players form the building blocks
-      for these APIs.
-    humanURL: ' https://developer.yahoo.com/fantasysports/guide/'
-    tags: []
+      The Fantasy Sports APIs provide URIs used to access fantasy sports data, supporting
+      retrieval of Fantasy Football, Baseball, Basketball and Hockey data including game, league,
+      team, player, roster and transaction information. The APIs follow a composed-URI model in
+      which resources like game, league, team and player and collections like games, leagues,
+      teams and players are stacked as path segments and filtered with semicolon matrix
+      parameters, so a single request can return a player nested inside its league. Responses are
+      XML by default with JSON available via format=json. Access requires a registered Yahoo app
+      and a three-legged OAuth 2.0 authorization-code grant.
+    humanURL: https://sports.yahoo.com/developer
+    baseURL: https://fantasysports.yahooapis.com/fantasy/v2
+    tags:
+      - Fantasy Sports
+      - Sports Data
+      - Consumer
     properties:
       - type: Documentation
-        url: ' https://developer.yahoo.com/fantasysports/guide/'
+        url: https://sports.yahoo.com/developer
+      - type: APIReference
+        url: https://sports.yahoo.com/developer/docs/
+      - type: GettingStarted
+        url: https://developer.yahoo.com/oauth2/guide/flows_authcode/
+      - type: SignUp
+        url: https://developer.yahoo.com/apps/create/
+      - type: Authentication
+        url: authentication/yahoo-authentication.yml
+      - type: DataModel
+        url: data-model/yahoo-data-model.yml
+  - aid: yahoo:dsp-traffic-api
+    name: Yahoo DSP Traffic API
+    description: >-
+      RESTful campaign-management API for the Yahoo demand-side platform. Exposes the full
+      trafficking hierarchy - seats, account groups, advertisers, campaigns, packages, lines, ads
+      and creatives - plus audiences of nine types, contextuals, supply lists, deals, exchanges,
+      pixels, bid multipliers, targeting and audit logs. Authentication is a two-legged OAuth 2.0
+      client-credentials flow whose token is presented in Yahoo's own X-Auth-Token header rather
+      than Authorization. Campaigns cannot be deleted through the API; state is managed by status
+      transition. A live GET /traffic/ratelimit endpoint returns the caller's own quota and
+      remaining balance.
+    humanURL: https://help.yahooinc.com/dsp-api/docs/yahoo-dsp-traffic-api
+    baseURL: https://dspapi.admanagerplus.yahoo.com/traffic/
+    tags:
+      - Advertising
+      - Programmatic Advertising
+      - Demand Side Platform
+      - Campaign Management
+    properties:
+      - type: Documentation
+        url: https://help.yahooinc.com/dsp-api/docs/dsp-api-help-home/
+      - type: APIReference
+        url: https://help.yahooinc.com/dsp-api/docs/about-the-traffic-api
+      - type: GettingStarted
+        url: https://help.yahooinc.com/dsp-api/docs/setup-access-guide
+      - type: Authentication
+        url: authentication/yahoo-authentication.yml
+      - type: RateLimits
+        url: rate-limits/yahoo-rate-limits.yml
+      - type: ChangeLog
+        url: https://help.yahooinc.com/dsp-api/docs/traffic-api-release-notes
+      - type: Deprecation
+        url: https://help.yahooinc.com/dsp-api/docs/traffic-api-deprecations
+      - type: Postman
+        url: https://www.postman.com/yahoodsp/workspace/public
+      - type: Conventions
+        url: conventions/yahoo-conventions.yml
+  - aid: yahoo:dsp-reporting-api
+    name: Yahoo DSP Reporting API
+    description: >-
+      Asynchronous large-scale reporting API for Yahoo DSP campaign data. A Reporting object -
+      composed of reportOption, limitSpec, filterOption, having and spec sub-objects plus account
+      IDs, date type, interval type and currency - is POSTed to create a report, then polled by
+      customerReportId until a CSV download URL is returned, valid for 24 hours. Reports may be up
+      to 20 GB, are capped at 500,000 rows per seat per day, and can reach back 13 months. The API
+      publishes an enumerated E-prefixed error-code table.
+    humanURL: https://help.yahooinc.com/dsp-api/docs/reporting-api
+    baseURL: http://api-sched-v3.admanagerplus.yahoo.com/yamplus_api/extreport/
+    tags:
+      - Advertising
+      - Reporting
+      - Analytics
+      - Demand Side Platform
+    properties:
+      - type: Documentation
+        url: https://help.yahooinc.com/dsp-api/docs/reporting-api
+      - type: APIReference
+        url: https://help.yahooinc.com/dsp-api/docs/resources
+      - type: Authentication
+        url: authentication/yahoo-authentication.yml
+      - type: RateLimits
+        url: rate-limits/yahoo-rate-limits.yml
+      - type: ErrorCatalog
+        url: errors/yahoo-error-codes.yml
+      - type: ChangeLog
+        url: https://help.yahooinc.com/dsp-api/docs/reporting-api-release-notes
+      - type: Deprecation
+        url: https://help.yahooinc.com/dsp-api/docs/reporting-api-deprecations
+    x-note: >-
+      Yahoo documents this endpoint over plain http, not https, in its own Resources article.
+      Recorded verbatim rather than silently upgraded.
+  - aid: yahoo:conversion-api
+    name: Yahoo Conversion API
+    description: >-
+      Server-to-server conversion-event API (CAPI) for campaign measurement, attribution and
+      optimization, positioned as the successor to browser-side Dot Pixel tracking. Two
+      specifications are published - a Standard variant using the conversion structures already
+      present in the Yahoo DSP and Dot Pixel, and a Product variant supporting product-level
+      events for the Yahoo In-Flight Outcomes solution. Requires its own direct OAuth 2.0 setup
+      separate from the DSP Traffic API. Third-party integrations exist through LiveRamp,
+      Narrative and Hightouch.
+    humanURL: https://help.yahooinc.com/dsp-api/docs/yahoo-conversion-api
+    baseURL: https://batch.datax.yahoo.com/v1/events/
+    tags:
+      - Advertising
+      - Conversion Tracking
+      - Attribution
+      - Server Side Events
+    properties:
+      - type: Documentation
+        url: https://help.yahooinc.com/dsp-api/docs/yahoo-conversion-api
+      - type: APIReference
+        url: https://help.yahooinc.com/dsp-api/docs/standard-yahoo-conversion-api
+      - type: Authentication
+        url: authentication/yahoo-authentication.yml
+      - type: ChangeLog
+        url: https://help.yahooinc.com/dsp-api/docs/conversion-api-release-notes
+      - type: Deprecation
+        url: https://help.yahooinc.com/dsp-api/docs/conversion-api-deprecations
+  - aid: yahoo:datax-api
+    name: Yahoo Ad Tech DataX API
+    description: >-
+      Partner-facing data-exchange API for uploading and managing audience taxonomies, user and
+      audience membership, fees and measurement feeds, plus a Real-Time API (specification v2.0),
+      a Partner Match data-in API and exposure-log delivery to Amazon S3, Microsoft Azure and
+      Google Cloud. Onboarding is a manual RSA key exchange with Yahoo data operations. It is the
+      only Yahoo API surface with hypermedia affordances, returning typed link relations under
+      datax.yahooapis.com/rels/ and opaque resource links. GDPR handling - jurisdiction flags,
+      IAB TCF consent purpose bits and opt-out semantics - is documented in depth.
+    humanURL: https://help.yahooinc.com/datax/docs/yahoo-ad-tech-datax-api-specifications
+    baseURL: https://datax.yahooapis.com/v1
+    tags:
+      - Advertising
+      - Audience Data
+      - Data Exchange
+      - Taxonomy
+      - GDPR
+    properties:
+      - type: Documentation
+        url: https://help.yahooinc.com/datax/docs/yahoo-ad-tech-datax-api-specifications
+      - type: APIReference
+        url: https://help.yahooinc.com/datax/docs/overview
+      - type: GettingStarted
+        url: https://help.yahooinc.com/datax/docs/security-authentication
+      - type: Authentication
+        url: authentication/yahoo-authentication.yml
+      - type: RateLimits
+        url: https://help.yahooinc.com/datax/docs/rate-limits-1
+      - type: Deprecation
+        url: https://help.yahooinc.com/datax/docs/batch-deprecations
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
+x-mcp-status: >-
+  Yahoo announced on 2025-08-25 that DSP developers "will have direct access to Model Context
+  Protocol (MCP) servers" for planning, activation, reporting and custom workflow integration. As
+  of this pass no endpoint, package or tool list is published. See mcp/yahoo-mcp.yml.
+x-contract-discovery:
+  probed: '2026-08-28'
+  result: no machine-readable API contract published
+  detail: >-
+    /openapi.json, /openapi.yaml, /swagger.json, /api-docs, /redoc probed on developer.yahoo.com,
+    developer.yahooinc.com, help.yahooinc.com, api.login.yahoo.com, dspapi.admanagerplus.yahoo.com
+    and fantasysports.yahooapis.com - every one 403 or 404. No /graphql surface. No
+    /.well-known/agent-card.json or /.well-known/agent.json on any host. No AsyncAPI, no .proto in
+    github.com/yahoo, no ?wsdl. The only machine-readable client artifact Yahoo publishes is the
+    public Postman collection under the yahoodsp workspace.
+x-enrichment:
+  date: '2026-08-28'
+  status: enriched
+  artifacts_added: 15
+  pass: local-v1

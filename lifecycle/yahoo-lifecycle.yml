@@ -1,0 +1,136 @@
+specification: API Commons Lifecycle
+specificationVersion: '0.1'
+provider: Yahoo
+providerId: yahoo
+generated: '2026-08-28'
+method: searched
+source: >-
+  https://help.yahooinc.com/dsp-api/docs/traffic-api-deprecations ,
+  https://help.yahooinc.com/dsp-api/docs/reporting-api-deprecations ,
+  https://help.yahooinc.com/dsp-api/docs/traffic-api-release-notes ,
+  https://help.yahooinc.com/dsp-api/docs/reporting-api ,
+  https://sports.yahoo.com/developer/docs/
+description: >-
+  Versioning, deprecation and support posture across the Yahoo API surface. Yahoo's ad-tech APIs
+  run a genuinely mature deprecation practice - four separate dated deprecation registers, one
+  per API, each naming the field or endpoint removed and the date it stopped working - while the
+  consumer Fantasy Sports API has been pinned at /fantasy/v2 for over a decade with no published
+  policy. No Yahoo API surface emits RFC 8594 Deprecation/Sunset headers, and Yahoo operates no
+  public status page for any developer API.
+versioning:
+  - api: Yahoo Fantasy Sports API
+    scheme: path
+    current_version: v2
+    base: https://fantasysports.yahooapis.com/fantasy/v2
+    policy_published: false
+    note: >-
+      Version is carried in the URI path. Game and season are addressed by game_key rather than
+      by API version, so a new NFL season is a data change, not a version change.
+  - api: Yahoo DSP Traffic API
+    scheme: unversioned-path
+    current_version: null
+    base: https://dspapi.admanagerplus.yahoo.com/traffic/
+    policy_published: false
+    note: >-
+      No version segment in the path. Change is communicated entirely through dated release notes
+      and the deprecation register; breaking changes land in place on their announced date.
+  - api: Yahoo DSP Reporting API
+    scheme: path
+    current_version: v3
+    base: http://api-sched-v3.admanagerplus.yahoo.com/yamplus_api/extreport/
+    policy_published: false
+    note: >-
+      Version appears in the hostname (api-sched-v3), not the path. Yahoo documents this endpoint
+      over plain http, not https, which is a real finding worth raising with the provider.
+  - api: Yahoo Ad Tech DataX Real-Time API
+    scheme: document
+    current_version: '2.0'
+    policy_published: false
+    note: Versioned by specification document (DataX Real-Time API Specification v2.0).
+deprecation:
+  policy_published: true
+  policy_form: dated per-API deprecation registers
+  rfc8594_headers: false
+  registers:
+    - api: Yahoo DSP Traffic API
+      url: https://help.yahooinc.com/dsp-api/docs/traffic-api-deprecations
+      status: 200
+    - api: Yahoo DSP Reporting API
+      url: https://help.yahooinc.com/dsp-api/docs/reporting-api-deprecations
+      status: 200
+    - api: Yahoo Conversion API
+      url: https://help.yahooinc.com/dsp-api/docs/conversion-api-deprecations
+      status: 200
+    - api: Yahoo DSP BYOA API
+      url: https://help.yahooinc.com/dsp-api/docs/byoa-api-deprecations
+      status: 200
+    - api: Yahoo Ad Tech DataX Batch
+      url: https://help.yahooinc.com/datax/docs/batch-deprecations
+      status: 200
+  recent:
+    - date: '2026-04-20'
+      api: Yahoo DSP Traffic API
+      item: Audiences history endpoint
+      effective: '2026-04-18'
+      detail: The Audiences history endpoint is deprecated.
+    - date: '2026-03-02'
+      api: Yahoo DSP Traffic API
+      item: Goals - CPCC, Completion Rate Threshold, MAXCTR, Maximize Completion Rate
+      effective: '2026-03-01'
+      detail: >-
+        Cost Per Custom Completion (CPCC) goal, Completion Rate Threshold, MAXCTR and Maximize
+        Completion Rate goals and the completionThreshold field are no longer supported.
+    - date: '2025-10-29'
+      api: Yahoo DSP Traffic API
+      item: /traffic/contextuals objects
+      detail: >-
+        The contextuals endpoint was updated with new contextual objects; specific older
+        contextual objects are no longer accepted.
+    - date: '2025-10-13'
+      api: Yahoo DSP Traffic API
+      item: videoAdPlacements parameter
+      replacement: videoAdPlcmts
+      detail: >-
+        The videoAdPlacements parameter for the Video_Placement_Type target type is deprecated in
+        favour of videoAdPlcmts.
+    - date: 'announced'
+      api: Yahoo DSP Traffic API
+      item: legacy limitPerMin / limitPerHour / limitPerDay fields on /traffic/ratelimit
+      detail: >-
+        Yahoo states the legacy aggregate rate-limit values "will be deprecated at a future date"
+        in favour of the per-method get/post/put fields. No date is given.
+status_page:
+  published: false
+  probes:
+    - url: https://status.yahoo.com/
+      status: 'DNS: NXDOMAIN'
+    - url: https://developer.yahoo.com/status
+      status: 404
+  note: >-
+    Yahoo publishes no status page for any developer API. The nearest operational surface is the
+    DSP console Insights view (https://sso.admanagerplus.yahoo.com/app/insights), which is behind
+    the customer login and is a reporting view, not an incident feed.
+sla:
+  published: false
+  note: >-
+    No public SLA. Yahoo publishes data-freshness and retention commitments for the Reporting API
+    (13-month retention; events in the previous six hours may not yet appear in reports) but no
+    availability or latency target.
+support:
+  - channel: DSP account team / DSP Support
+    detail: Primary channel for ad-tech API access, quota increases and credential re-issue.
+    public: false
+  - channel: Yahoo Developer Network feedback forum
+    url: https://yahoo.uservoice.com/forums/182455-yahoo-developer-network
+    status: 200
+    public: true
+  - channel: Ad-tech data innovation contact
+    detail: adtech.datainnovation@yahooinc.com (agentic AI / API roadmap input)
+    public: true
+deprecated_operations: []
+deprecated_operations_note: >-
+  Cannot be derived - Yahoo publishes no OpenAPI for any surface, so there is no deprecated:true
+  flag to read. The deprecation register above is the only machine-adjacent record.
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

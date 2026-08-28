@@ -4,84 +4,195 @@ schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main
 provider: Yahoo
 providerId: yahoo
 created: '2026-05-04'
-# Provenance stamped 2026-08-11: this artifact was written by the API Evangelist
-# bulk sweep dated 2026-05-04, not harvested from the provider. See roadmap#35.
-method: generated
-modified: '2026-05-04'
+modified: '2026-08-28'
+generated: '2026-08-28'
+method: searched
+source: >-
+  https://help.yahooinc.com/dsp-api/docs/rate-limits ,
+  https://help.yahooinc.com/dsp-api/docs/limits ,
+  https://sports.yahoo.com/developer
+docs:
+  - https://help.yahooinc.com/dsp-api/docs/rate-limits
+  - https://help.yahooinc.com/dsp-api/docs/limits
 tags:
   - Rate Limiting
   - Quotas
   - Throttling
-description: Machine-readable rate limit definitions for the Yahoo API surface. Captures per-tier quotas,
-  burst behavior, response signaling, and recovery semantics. Defaults are scaffold values to be replaced
-  with published provider limits.
+description: >-
+  Published rate limits for the Yahoo API surface. The Yahoo DSP Traffic API and DSP Reporting
+  API both document per-user default quotas across rolling minute, hour and day windows, and the
+  Traffic API exposes a live GET /traffic/ratelimit endpoint that returns the caller's own limits
+  AND remaining balances. Limits are adjustable per account through the Yahoo account team. The
+  Fantasy Sports API publishes no numeric limit - only a discretionary throttling statement.
+  This file replaces a 2026-05-04 scaffold whose numbers were invented defaults.
 headers:
-  limit: X-RateLimit-Limit
-  remaining: X-RateLimit-Remaining
-  reset: X-RateLimit-Reset
-  retryAfter: Retry-After
-  policy: RateLimit-Policy
+  note: >-
+    Yahoo publishes NO X-RateLimit-* / RateLimit-* / Retry-After response headers for the DSP
+    APIs. The runtime signal is an out-of-band GET /traffic/ratelimit poll plus a 429 body with a
+    validationErrors[].propertyName naming the exhausted window (for example GET_PER_MINUTE).
+    An agent cannot read remaining budget from the response of the call it just made.
+  limit: null
+  remaining: null
+  reset: null
+  retryAfter: null
+  policy: null
+runtimeEndpoint:
+  method: GET
+  path: /traffic/ratelimit
+  url: https://dspapi.admanagerplus.yahoo.com/traffic/ratelimit
+  parameters: none
+  returns: >-
+    trafficApiRateLimit object with getLimitPerMin/Hr/Day, postLimitPerMin/Hr/Day,
+    putLimitPerMin/Hr/Day and a *Remaining counterpart for each, plus legacy limitPerMin,
+    limitPerHour and limitPerDay fields that Yahoo has flagged for future deprecation.
+  api: Yahoo DSP Traffic API
 responseCodes:
   throttled: 429
-  quotaExceeded: 429
-  serviceUnavailable: 503
+  quotaExceeded: 422
+  quotaExceededNote: >-
+    The DSP Traffic API returns 429 on rate-limit exhaustion. The DSP Reporting API returns 422
+    with error codes E0200 (requests per minute), E0202 (daily row count) and E0203 (daily
+    request limit).
 limits:
-  - tier: free
-    name: Free Tier Default
-    scope: api-key
-    metric: requests_per_minute
-    limit: 10
-    burst: 20
+  - api: Yahoo DSP Traffic API
+    name: GET Requests Per Minute
+    scope: per-user-account
+    metric: get_requests_per_minute
+    limit: 60
     timeFrame: minute
-    applies:
-      - Yahoo
-  - tier: free
-    name: Free Tier Monthly Quota
-    scope: api-key
-    metric: requests_per_month
-    limit: 1000
-    timeFrame: month
-    applies:
-      - Yahoo
-  - tier: professional
-    name: Professional Tier Default
-    scope: api-key
-    metric: requests_per_minute
+    window: rolling
+  - api: Yahoo DSP Traffic API
+    name: PUT Requests Per Minute
+    scope: per-user-account
+    metric: put_requests_per_minute
+    limit: 30
+    timeFrame: minute
+    window: rolling
+  - api: Yahoo DSP Traffic API
+    name: POST Requests Per Minute
+    scope: per-user-account
+    metric: post_requests_per_minute
+    limit: 30
+    timeFrame: minute
+    window: rolling
+  - api: Yahoo DSP Traffic API
+    name: GET Requests Per Hour
+    scope: per-user-account
+    metric: get_requests_per_hour
+    limit: 360
+    timeFrame: hour
+    window: rolling
+  - api: Yahoo DSP Traffic API
+    name: PUT Requests Per Hour
+    scope: per-user-account
+    metric: put_requests_per_hour
     limit: 100
-    burst: 200
-    timeFrame: minute
-    applies:
-      - Yahoo
-  - tier: professional
-    name: Professional Tier Monthly Quota
-    scope: api-key
-    metric: requests_per_month
-    limit: 100000
-    timeFrame: month
-    applies:
-      - Yahoo
-  - tier: enterprise
-    name: Enterprise Negotiated Limit
-    scope: contract
-    metric: requests_per_minute
+    timeFrame: hour
+    window: rolling
+  - api: Yahoo DSP Traffic API
+    name: POST Requests Per Hour
+    scope: per-user-account
+    metric: post_requests_per_hour
+    limit: 75
+    timeFrame: hour
+    window: rolling
+  - api: Yahoo DSP Traffic API
+    name: GET Requests Per Day
+    scope: per-user-account
+    metric: get_requests_per_day
+    limit: 8000
+    timeFrame: day
+    window: rolling
+  - api: Yahoo DSP Traffic API
+    name: PUT Requests Per Day
+    scope: per-user-account
+    metric: put_requests_per_day
+    limit: 2000
+    timeFrame: day
+    window: rolling
+  - api: Yahoo DSP Traffic API
+    name: POST Requests Per Day
+    scope: per-user-account
+    metric: post_requests_per_day
     limit: 1000
-    burst: 5000
+    timeFrame: day
+    window: rolling
+  - api: Yahoo DSP Reporting API
+    name: POST Requests Per Minute
+    scope: per-user
+    metric: post_requests_per_minute
+    limit: 20
     timeFrame: minute
-    applies:
-      - Yahoo
+  - api: Yahoo DSP Reporting API
+    name: GET Requests Per Minute
+    scope: per-user
+    metric: get_requests_per_minute
+    limit: 60
+    timeFrame: minute
+  - api: Yahoo DSP Reporting API
+    name: POST Requests Per Hour
+    scope: per-user
+    metric: post_requests_per_hour
+    limit: 100
+    timeFrame: hour
+  - api: Yahoo DSP Reporting API
+    name: GET Requests Per Hour
+    scope: per-user
+    metric: get_requests_per_hour
+    limit: 300
+    timeFrame: hour
+  - api: Yahoo DSP Reporting API
+    name: POST Requests Per Day
+    scope: per-user
+    metric: post_requests_per_day
+    limit: 800
+    timeFrame: day
+    note: The day window is a 24-hour interval starting at the first request from any user.
+  - api: Yahoo DSP Reporting API
+    name: GET Requests Per Day
+    scope: per-user
+    metric: get_requests_per_day
+    limit: 12000
+    timeFrame: day
+    note: The day window is a 24-hour interval starting at the first request from any user.
+  - api: Yahoo DSP Reporting API
+    name: Report Rows Per Day
+    scope: per-seat
+    metric: report_rows_per_day
+    limit: 500000
+    timeFrame: day
+    note: >-
+      500,000 rows per day per seat. Reports returning certain metrics or dimensions (listed on
+      the Limits page) are individually capped at 500K rows. Larger pulls require an account
+      manager request.
+  - api: Yahoo DSP Reporting API
+    name: Maximum Report Size
+    scope: per-report
+    metric: report_size_bytes
+    limit: 21474836480
+    timeFrame: request
+    note: 20 GB per report; all reports are returned as CSV via a URL valid for 24 hours.
+limit_count: 17
 policies:
-  - name: Backoff Strategy
-    description: Clients should implement exponential backoff with jitter, honoring the Retry-After header
-      when present.
-  - name: Burst Handling
-    description: Short bursts above the steady-state limit are tolerated up to the documented burst ceiling
-      before throttling engages.
-  - name: Quota Reset
-    description: Monthly quotas reset at the start of each calendar month in UTC. Per-minute and per-second
-      windows reset on a sliding-window basis.
-  - name: Fair Use
-    description: Even on uncapped enterprise tiers, sustained usage that materially impacts shared infrastructure
-      may be subject to fair-use throttling.
+  - name: Account-level adjustment
+    description: >-
+      DSP Traffic API rate limits are adjustable on an account-by-account basis; increases are
+      requested through the Yahoo account team.
+    source: https://help.yahooinc.com/dsp-api/docs/rate-limits
+  - name: Fantasy Sports discretionary throttling
+    description: >-
+      Yahoo publishes no numeric Fantasy Sports limit, stating only that "if individual usage is
+      excessive over the course of short periods of time or impacts performance, we may
+      temporarily throttle or limit access."
+    source: https://sports.yahoo.com/developer
+  - name: Reporting data recency
+    description: >-
+      Data from events in the previous six hours may not appear in Reporting API output; the
+      DSP console Insights view is the up-to-the-minute alternative.
+    source: https://help.yahooinc.com/dsp-api/docs/limits
+  - name: Reporting data retention
+    description: Reporting API data is retained for 13 months; older data is purged.
+    source: https://help.yahooinc.com/dsp-api/docs/reporting-api
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com

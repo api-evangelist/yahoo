@@ -1,0 +1,224 @@
+specification: API Commons Data Model
+specificationVersion: '0.1'
+provider: Yahoo
+providerId: yahoo
+generated: '2026-08-28'
+method: searched
+source: >-
+  https://help.yahooinc.com/dsp-api/docs/about-the-traffic-api ,
+  https://help.yahooinc.com/dsp-api/docs/campaigns ,
+  https://help.yahooinc.com/dsp-api/docs/resources ,
+  https://sports.yahoo.com/developer/docs/
+description: >-
+  Entity graph for the two Yahoo API surfaces that expose one. Derived from the published resource
+  reference rather than from OpenAPI $refs, because Yahoo publishes no spec. The DSP Traffic API
+  is a strict containment hierarchy from seat down to ad, with audiences, creatives, deals and
+  supply lists attached laterally. The Fantasy Sports API is a composed URI tree in which the
+  relationship IS the path - a resource key encodes its own ancestry (461.l.1000.t.1 is team 1 of
+  league 1000 of game 461), so the key format is the foreign key.
+domains:
+  - name: Yahoo DSP Traffic API
+    base: https://dspapi.admanagerplus.yahoo.com/traffic/
+    id_style: integer surrogate keys assigned by Yahoo
+    entities:
+      - name: Seat
+        endpoint: /traffic/seats
+        note: Top of the ownership tree; API access and rate limits are bounded by seat.
+      - name: Account Group
+        endpoint: /traffic/accountgroups
+        public_name: Advertiser Group
+      - name: Advertiser
+        endpoint: /traffic/advertisers
+        note: Carries frequencyGroupEnabled and frequencyGroupList as of 2026-07-23.
+      - name: Campaign
+        endpoint: /traffic/campaigns
+        key_fields: [id, accountId, status, goalType, goalValue, budgetType, currency, timezone]
+        note: >-
+          Cannot be deleted through the API. status is ACTIVE | PAUSED | INACTIVE, with
+          STOP_TOTAL_BUDGET, STOP_DAILY_BUDGET, NOT_STARTED, ENDED, NO_ADS_ADDED, ERROR and
+          ARCHIVED returned read-only.
+      - name: Package
+        endpoint: /traffic/packages
+      - name: Line
+        endpoint: /traffic/lines
+        note: The bidding and targeting unit; owns targeting and bid multipliers as sub-resources.
+      - name: Targeting
+        endpoint: /traffic/lines/{lineID}/targeting
+      - name: Bid Multiplier
+        endpoint: /traffic/lines/{lineID}/bidmultiplier
+      - name: Ad
+        endpoint: /traffic/ads
+      - name: Creative
+        endpoint: /traffic/creatives
+      - name: Pixel
+        endpoint: /traffic/pixels
+        public_name: Pixel (called beacon inside the API docs)
+      - name: Audience
+        endpoint: /traffic/audiences/{type}
+        subtypes:
+          - composite
+          - conversion_rule
+          - device_id
+          - email_address
+          - lookalike
+          - mrt
+          - mail_event
+          - poi
+          - srt
+      - name: Contextual
+        endpoint: /traffic/contextuals
+      - name: Supply List
+        endpoint: /traffic/sitelists
+        public_name: Site Lists and App Lists
+      - name: User Group
+        endpoint: /traffic/usergroups
+      - name: Exchange
+        endpoint: /traffic/exchanges
+      - name: Deal
+        endpoint: /traffic/deals
+      - name: Audit Log
+        endpoint: /traffic/auditlog
+        note: Available at campaign, package and line level as of 2026-05-19.
+      - name: Rate Limit
+        endpoint: /traffic/ratelimit
+        note: Operational resource, not a business object.
+    relationships:
+      - from: Seat
+        to: Account Group
+        kind: has_many
+      - from: Account Group
+        to: Advertiser
+        kind: has_many
+      - from: Advertiser
+        to: Campaign
+        kind: has_many
+        via: accountId
+      - from: Campaign
+        to: Package
+        kind: has_many
+      - from: Campaign
+        to: Line
+        kind: has_many
+      - from: Package
+        to: Line
+        kind: has_many
+      - from: Line
+        to: Ad
+        kind: has_many
+      - from: Line
+        to: Targeting
+        kind: has_one
+        via: 'path /traffic/lines/{lineID}/targeting'
+      - from: Line
+        to: Bid Multiplier
+        kind: has_one
+        via: 'path /traffic/lines/{lineID}/bidmultiplier'
+      - from: Ad
+        to: Creative
+        kind: belongs_to
+      - from: Targeting
+        to: Audience
+        kind: references
+      - from: Targeting
+        to: Contextual
+        kind: references
+      - from: Targeting
+        to: Supply List
+        kind: references
+      - from: Targeting
+        to: Deal
+        kind: references
+      - from: Deal
+        to: Exchange
+        kind: belongs_to
+      - from: Pixel
+        to: Audience
+        kind: feeds
+        via: conversion_rule audiences
+  - name: Yahoo DSP Reporting API
+    base: http://api-sched-v3.admanagerplus.yahoo.com/yamplus_api/extreport/
+    entities:
+      - name: Reporting object
+        note: >-
+          Composed of reportOption, limitSpec, filterOption, having and spec sub-objects plus
+          accountIds, dateTypeId, intervalTypeId, startDate, endDate, dataSource and currency.
+      - name: Customer Report
+        key: customerReportId
+        note: Created by POST, polled by GET; result delivered as a CSV URL valid 24 hours.
+      - name: Close of Books
+        endpoint: /extreport/cob
+    relationships:
+      - from: Reporting object
+        to: Customer Report
+        kind: creates
+      - from: Customer Report
+        to: Advertiser
+        kind: references
+        via: accountIds
+  - name: Yahoo Fantasy Sports API
+    base: https://fantasysports.yahooapis.com/fantasy/v2
+    id_style: >-
+      Composite dotted keys that encode ancestry - game_key.l.league_id.t.team_id, and
+      game_key.p.player_id. The key is the join.
+    entities:
+      - name: Game
+        endpoint: /game/{game_key}
+        collection: /games
+        sub_resources: [metadata, leagues, players, game_weeks, stat_categories, position_types, roster_positions, dates]
+      - name: League
+        endpoint: /league/{league_key}
+        collection: /leagues
+        sub_resources: [metadata, settings, standings, scoreboard, teams, players, draftresults, transactions]
+      - name: Team
+        endpoint: /team/{team_key}
+        collection: /teams
+        sub_resources: [metadata, stats, standings, roster, draftresults, matchups]
+      - name: Player
+        endpoint: /player/{player_key}
+        collection: /players
+        sub_resources: [metadata, stats, ownership, percent_owned, draft_analysis]
+      - name: Roster
+        endpoint: /team/{team_key}/roster
+      - name: Transaction
+        endpoint: /transaction/{transaction_key}
+        collection: /league/{league_key}/transactions
+        note: Types include add, drop, trade, waiver and pending_trade.
+      - name: User
+        endpoint: /users;use_login=1
+        sub_resources: [games, leagues, teams]
+    relationships:
+      - from: Game
+        to: League
+        kind: has_many
+        via: 'league_key prefix (461.l.1000 belongs to game 461)'
+      - from: League
+        to: Team
+        kind: has_many
+        via: 'team_key prefix (461.l.1000.t.1)'
+      - from: League
+        to: Transaction
+        kind: has_many
+      - from: Team
+        to: Roster
+        kind: has_one
+      - from: Roster
+        to: Player
+        kind: has_many
+      - from: Game
+        to: Player
+        kind: has_many
+        via: 'player_key prefix (461.p.30121)'
+      - from: User
+        to: Team
+        kind: has_many
+      - from: Transaction
+        to: Player
+        kind: references
+entity_count: 40
+note: >-
+  Derived from documentation, not from a machine-readable contract. Field-level types are
+  published for DSP resources in prose tables and are NOT captured here; a consumer still cannot
+  generate a client without hand-transcribing them.
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

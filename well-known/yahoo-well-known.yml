@@ -1,0 +1,162 @@
+specification: API Commons Well-Known
+specificationVersion: '0.1'
+provider: Yahoo
+providerId: yahoo
+generated: '2026-08-28'
+method: probed
+source: live GET probes of /.well-known/* on every Yahoo API, docs and identity host
+description: >-
+  Well-known document probe across the Yahoo developer, identity, Fantasy Sports, ad-tech
+  documentation and DSP API hosts. Yahoo serves an RFC 9116 security.txt from its shared
+  edge across yahoo.com properties, and a full OpenID Connect discovery document from the
+  Yahoo identity host api.login.yahoo.com. No api-catalog, ai-plugin or A2A agent card is
+  served on any probed host.
+hosts:
+  - host: api.login.yahoo.com
+    documents:
+      - path: /.well-known/openid-configuration
+        status: 200
+        file: yahoo-openid-configuration.json
+        note: >-
+          Real OpenID Connect Discovery 1.0 document. issuer https://api.login.yahoo.com;
+          authorization_code + refresh_token grants; scopes openid, openid2, profile, email.
+      - path: /.well-known/security.txt
+        status: 404
+      - path: /.well-known/oauth-authorization-server
+        status: 404
+      - path: /.well-known/api-catalog
+        status: 404
+      - path: /.well-known/ai-plugin.json
+        status: 404
+      - path: /.well-known/agent-card.json
+        status: 404
+      - path: /.well-known/agent.json
+        status: 404
+  - host: developer.yahoo.com
+    documents:
+      - path: /.well-known/security.txt
+        status: 200
+        file: yahoo-security.txt
+        note: RFC 9116 security.txt; Intigriti bug bounty program and security@yahooinc.com.
+      - path: /.well-known/openid-configuration
+        status: 404
+        note: 301 to a trailing-slash path that then returns a 404 HTML page.
+      - path: /.well-known/oauth-authorization-server
+        status: 404
+        note: 301 to a trailing-slash path that then returns a 404 HTML page.
+      - path: /.well-known/api-catalog
+        status: 404
+        note: 301 to a trailing-slash path that then returns a 404 HTML page.
+      - path: /.well-known/ai-plugin.json
+        status: 404
+      - path: /.well-known/agent-card.json
+        status: 404
+      - path: /.well-known/agent.json
+        status: 404
+  - host: developer.yahooinc.com
+    documents:
+      - path: /.well-known/security.txt
+        status: 200
+        note: Same shared security.txt body as developer.yahoo.com.
+      - path: /.well-known/openid-configuration
+        status: 404
+        note: 301 to developer.verizonmedia.com, which 404s.
+      - path: /.well-known/oauth-authorization-server
+        status: 404
+      - path: /.well-known/api-catalog
+        status: 404
+      - path: /.well-known/ai-plugin.json
+        status: 404
+      - path: /.well-known/agent-card.json
+        status: 404
+      - path: /.well-known/agent.json
+        status: 404
+  - host: sports.yahoo.com
+    documents:
+      - path: /.well-known/security.txt
+        status: 200
+        note: Same shared security.txt body; sports.yahoo.com hosts the Fantasy Sports API docs.
+      - path: /.well-known/openid-configuration
+        status: 404
+      - path: /.well-known/oauth-authorization-server
+        status: 404
+      - path: /.well-known/api-catalog
+        status: 404
+      - path: /.well-known/ai-plugin.json
+        status: 404
+      - path: /.well-known/agent-card.json
+        status: 404
+      - path: /.well-known/agent.json
+        status: 404
+  - host: www.yahoo.com
+    documents:
+      - path: /.well-known/security.txt
+        status: 200
+      - path: /.well-known/openid-configuration
+        status: 404
+      - path: /.well-known/oauth-authorization-server
+        status: 404
+      - path: /.well-known/api-catalog
+        status: 404
+      - path: /.well-known/ai-plugin.json
+        status: 404
+      - path: /.well-known/agent-card.json
+        status: 404
+      - path: /.well-known/agent.json
+        status: 404
+  - host: fantasysports.yahooapis.com
+    documents:
+      - path: /.well-known/security.txt
+        status: 200
+      - path: /.well-known/openid-configuration
+        status: 403
+        note: 'Envoy RBAC gate: "RBAC: access denied" on every non-/fantasy path.'
+      - path: /.well-known/oauth-authorization-server
+        status: 403
+      - path: /.well-known/api-catalog
+        status: 403
+      - path: /.well-known/ai-plugin.json
+        status: 403
+      - path: /.well-known/agent-card.json
+        status: 403
+      - path: /.well-known/agent.json
+        status: 403
+  - host: dspapi.admanagerplus.yahoo.com
+    documents:
+      - path: /.well-known/security.txt
+        status: 404
+      - path: /.well-known/openid-configuration
+        status: 404
+      - path: /.well-known/oauth-authorization-server
+        status: 404
+      - path: /.well-known/api-catalog
+        status: 404
+      - path: /.well-known/ai-plugin.json
+        status: 404
+      - path: /.well-known/agent-card.json
+        status: 404
+      - path: /.well-known/agent.json
+        status: 404
+  - host: help.yahooinc.com
+    documents:
+      - path: /.well-known/security.txt
+        status: 404
+      - path: /.well-known/openid-configuration
+        status: 404
+      - path: /.well-known/oauth-authorization-server
+        status: 404
+      - path: /.well-known/api-catalog
+        status: 404
+      - path: /.well-known/ai-plugin.json
+        status: 404
+      - path: /.well-known/agent-card.json
+        status: 404
+      - path: /.well-known/agent.json
+        status: 404
+    note: >-
+      No /.well-known documents, but this host DOES publish an llms.txt index at
+      https://help.yahooinc.com/llms.txt covering the DSP API, DataX API, ConnectID
+      and Identity documentation sets. Saved to llms/yahoo-llms.txt.
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

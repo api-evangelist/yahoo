@@ -1,0 +1,61 @@
+specification: API Commons MCP
+specificationVersion: '0.1'
+provider: Yahoo
+providerId: yahoo
+generated: '2026-08-28'
+method: searched
+source: >-
+  https://help.yahooinc.com/dsp-api/docs/yahoo-dsp-and-agentic-ai ,
+  https://help.yahooinc.com/llms.txt , registry.npmjs.org , pypi.org
+status: announced-not-shipped
+description: >-
+  Yahoo has publicly stated an intent to ship MCP servers for the DSP and has shipped nothing yet.
+  The DSP documentation set carries a page, "Yahoo DSP and Agentic AI" (published 2025-08-25),
+  saying developers "will have direct access to Model Context Protocol (MCP) servers, enabling
+  efficient agentic operations across planning, activation, reporting and custom workflow
+  integrations" - future tense, with a Google Form soliciting input and an email address for
+  partnership. No endpoint URL, no package, no installation instruction and no tool list is
+  published anywhere on the Yahoo surface, and no Yahoo-published MCP package exists on npm or
+  PyPI. This artifact records the announcement and the absence; it does not derive a candidate
+  tool list, because Yahoo publishes no OpenAPI to ground one in.
+deployment:
+  mode: none
+  endpoint: null
+  install: null
+  package: null
+  auth: unknown
+  verified: searched
+announcement:
+  page: https://help.yahooinc.com/dsp-api/docs/yahoo-dsp-and-agentic-ai
+  status: 200
+  published: '2025-08-25'
+  updated: '2025-08-25'
+  posture: >-
+    "hybrid approach to agentic AI, integrating first-party agents with external partner
+    solutions"; MCP access described as forthcoming across planning, activation, reporting and
+    custom workflow integration.
+  feedback_form: https://forms.gle/XSd33TpBLotavK2A9
+  contact: adtech.datainnovation@yahooinc.com
+tools: []
+tool_count: 0
+probes:
+  - url: https://help.yahooinc.com/dsp-api/docs/yahoo-dsp-and-agentic-ai
+    status: 200
+    result: announcement only, no endpoint
+  - url: https://registry.npmjs.org/@yahoo/connectid
+    status: 404
+  - url: https://registry.npmjs.org/yahoo-dsp
+    status: 404
+  - url: https://developer.yahoo.com/.well-known/ai-plugin.json
+    status: 404
+  - url: https://developer.yahooinc.com/.well-known/ai-plugin.json
+    status: 404
+note: >-
+  No MCPServer pointer is emitted in apis.yml. Emitting one would assert that an agent can reach
+  Yahoo through MCP today, which is not true. What Yahoo DOES publish for agents is an llms.txt
+  documentation index at help.yahooinc.com/llms.txt covering 192 pages across the DSP API, DataX
+  API, ConnectID and Identity documentation sets - saved to llms/yahoo-llms.txt and pointed at
+  with type LLMsTxt. Re-probe this artifact when the DSP MCP servers ship.
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

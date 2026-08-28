@@ -1,0 +1,51 @@
+specification: API Commons OAuth Scopes
+specificationVersion: '0.1'
+provider: Yahoo
+providerId: yahoo
+generated: '2026-08-28'
+method: searched
+source: >-
+  https://api.login.yahoo.com/.well-known/openid-configuration ,
+  https://developer.yahoo.com/oauth2/guide/openid_connect/ ,
+  https://developer.yahoo.com/apps/create/
+docs: https://developer.yahoo.com/oauth2/guide/openid_connect/
+description: >-
+  OAuth scope surface for the Yahoo identity service at api.login.yahoo.com. The four scopes
+  below are the ones the provider advertises in its own OpenID Connect discovery document; they
+  cover sign-in and profile/email claims. Per-API data permissions (for example Fantasy Sports
+  read/write) are granted as API Permissions selected when an app is registered at
+  developer.yahoo.com/apps/create/, not as discovery-published scope strings, and Yahoo does not
+  publish a machine-readable list of those permission identifiers.
+authorization_server: https://api.login.yahoo.com
+discovery: https://api.login.yahoo.com/.well-known/openid-configuration
+scopes:
+  - name: openid
+    description: Requests an OpenID Connect ID token identifying the signed-in Yahoo user.
+    source: discovery scopes_supported
+  - name: openid2
+    description: >-
+      Yahoo's legacy OpenID 2.0 compatibility scope, returned alongside openid for callers
+      migrating from the retired OpenID 2.0 endpoints.
+    source: discovery scopes_supported
+  - name: profile
+    description: >-
+      Basic profile claims - name, given_name, family_name, birthdate, locale.
+    source: discovery scopes_supported
+  - name: email
+    description: The user's email address and its verification state (email, email_verified).
+    source: discovery scopes_supported
+scope_count: 4
+not_scope_based:
+  - api: Yahoo DSP Traffic API
+    reason: >-
+      Two-legged client_credentials with a JWT client assertion; access is bounded by the seat and
+      user role assigned in the DSP UI, not by OAuth scope strings.
+  - api: Yahoo DSP Reporting API
+    reason: Same client_credentials model as the Traffic API; no scope parameter is documented.
+  - api: Yahoo Ad Tech DataX API
+    reason: >-
+      Access is provisioned per partner during onboarding via an exchanged RSA public key; no
+      scopes are published.
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

@@ -1,0 +1,119 @@
+specification: API Commons ChangeLog
+specificationVersion: '0.1'
+provider: Yahoo
+providerId: yahoo
+generated: '2026-08-28'
+method: searched
+source: >-
+  https://help.yahooinc.com/dsp-api/docs/traffic-api-release-notes ,
+  https://help.yahooinc.com/dsp-api/docs/reporting-api-release-notes
+docs:
+  - https://help.yahooinc.com/dsp-api/docs/traffic-api-release-notes
+  - https://help.yahooinc.com/dsp-api/docs/reporting-api-release-notes
+  - https://help.yahooinc.com/dsp-api/docs/conversion-api-release-notes
+  - https://help.yahooinc.com/dsp-api/docs/byoa-api-release-notes
+description: >-
+  Yahoo maintains dated release notes per ad-tech API, split by year, each entry written in a
+  consistent "What happened? / What to do?" form that names the exact field, enum value or
+  endpoint that changed and the action a client must take. The Traffic API register was last
+  updated 2026-08-21. There is no changelog for the Fantasy Sports API.
+scheme: dated-entries-by-api
+current_version: null
+current_version_note: >-
+  The DSP Traffic API carries no version identifier; the release-note date is the only version
+  handle a client has.
+last_updated: '2026-08-21'
+entries:
+  - date: '2026-08-12'
+    api: Yahoo DSP Traffic API
+    type: change
+    breaking: false
+    title: IAS Context Control Targeting and Avoidance
+    highlight: >-
+      IAS Context Control split into two taxonomies, Targeting and Avoidance, usable together in
+      one line with AND logic. New contextual product taxonomy type value
+      IAS_CONTEXT_CONTROL_TARGETING.
+  - date: '2026-07-23'
+    api: Yahoo DSP Traffic API
+    type: addition
+    breaking: false
+    title: Frequency Groups in Traffic API
+    highlight: >-
+      Advertiser responses now expose frequencyGroupEnabled and frequencyGroupList; clients can
+      assign frequencyGroupIndex on campaign, package and line frequency caps. Additive.
+  - date: '2026-06-01'
+    api: Yahoo DSP Traffic API
+    type: change
+    breaking: true
+    title: DMA targeting endpoints migrated to Market Area
+    highlight: >-
+      Market Area support migrated across six endpoints. Line targeting and bid multipliers now
+      take geoFormat=market_area.
+  - date: '2026-05-19'
+    api: Yahoo DSP Traffic API
+    type: addition
+    breaking: false
+    title: Audit logs at campaign, package and line level
+    highlight: The auditlog endpoint now returns logs at campaign, package and line granularity.
+  - date: '2026-04-18'
+    api: Yahoo DSP Traffic API
+    type: removal
+    breaking: true
+    title: Audiences history endpoint deprecated
+    highlight: The Audiences history endpoint was removed.
+  - date: '2026-04-14'
+    api: Yahoo DSP Traffic API
+    type: addition
+    breaking: false
+    title: Congressional district targeting and bid multipliers
+    highlight: >-
+      Congressional district targeting types and CONGRESSIONAL_DISTRICT bid multipliers available
+      to political seats.
+  - date: '2026-03-23'
+    api: Yahoo DSP Traffic API
+    type: change
+    breaking: true
+    title: Country selection required for three audience types
+    highlight: >-
+      countryCodes is now required when creating or updating Search Keyword, Mail Domain and
+      Purchase Receipt audiences. GET /traffic/audiences/countries returns supported ISO3 codes.
+  - date: '2026-03-01'
+    api: Yahoo DSP Traffic API
+    type: removal
+    breaking: true
+    title: CPCC and completion-rate goals withdrawn
+    highlight: >-
+      CPCC goal, Completion Rate Threshold, MAXCTR, Maximize Completion Rate and the
+      completionThreshold field are no longer supported.
+  - date: '2025-10-13'
+    api: Yahoo DSP Traffic API
+    type: rename
+    breaking: true
+    title: videoAdPlacements renamed to videoAdPlcmts
+    highlight: >-
+      The videoAdPlacements parameter for Video_Placement_Type targeting was replaced by
+      videoAdPlcmts.
+  - date: '2025-09-01'
+    api: Yahoo DSP Reporting API
+    type: addition
+    breaking: false
+    title: Weighted conversions support
+    highlight: Metric ID 747 (Weighted Conversions) and 748 (Weighted CPA) added.
+  - date: '2025-08-25'
+    api: Yahoo DSP Reporting API
+    type: addition
+    breaking: false
+    title: Video Ad Placement (IAB)
+    highlight: >-
+      Dimension Type ID 1240 added to align with the latest IAB video placement guidelines.
+entry_count: 11
+window: 2025-08-25 through 2026-08-12 (recent window only; Yahoo archives prior years separately)
+archive: https://help.yahooinc.com/dsp-api/docs/release-notes#2025
+gaps:
+  - The Yahoo Fantasy Sports API has no changelog, release notes or version history page.
+  - >-
+    Release notes are prose on a documentation host; there is no feed, no machine-readable
+    changelog, and no version identifier a client can pin to.
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com
