@@ -15,6 +15,17 @@ description: >-
   client-credentials JWT flow. Yahoo publishes no OpenAPI for any of these surfaces, distributing
   a public Postman collection and an llms.txt documentation index instead.
 type: Index
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: false
+  label: Hosted service · you call their endpoint
+  confidence: medium
+  source:
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 accessModel:
   pricing: gated
   onboarding: application
