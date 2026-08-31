@@ -1,0 +1,14 @@
+{
+  "repo": "yahoo",
+  "feeds": [
+    {
+      "source": "https://yahoo.uservoice.com/forums/182455-yahoo-developer-network",
+      "feed_url": "https://yahoo.uservoice.com/forums/182455-yahoo-developer-network",
+      "title": "",
+      "saved": 0,
+      "method": "none"
+    }
+  ],
+  "post_count": 0,
+  "fetched": "2026-08-30T22:33:40Z"
+}

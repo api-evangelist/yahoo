@@ -45,6 +45,19 @@ image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/yahoo.png
 tags:
   - Advertising
   - Programmatic Advertising
+  - Demand-Side Platform
+  - Fantasy Sports
+  - Sports Data
+  - Identity
+  - OpenID Connect
+  - Authentication
+  - Audience Data
+  - Media
+  - Reporting
+  - Conversion Tracking
+tags_raw:
+  - Advertising
+  - Programmatic Advertising
   - Demand Side Platform
   - Fantasy Sports
   - Sports Data
@@ -170,6 +183,11 @@ apis:
     tags:
       - Advertising
       - Programmatic Advertising
+      - Demand-Side Platform
+      - Campaign Management
+    tags_raw:
+      - Advertising
+      - Programmatic Advertising
       - Demand Side Platform
       - Campaign Management
     properties:
@@ -206,6 +224,11 @@ apis:
       - Advertising
       - Reporting
       - Analytics
+      - Demand-Side Platform
+    tags_raw:
+      - Advertising
+      - Reporting
+      - Analytics
       - Demand Side Platform
     properties:
       - type: Documentation
@@ -238,6 +261,11 @@ apis:
     humanURL: https://help.yahooinc.com/dsp-api/docs/yahoo-conversion-api
     baseURL: https://batch.datax.yahoo.com/v1/events/
     tags:
+      - Advertising
+      - Conversion Tracking
+      - Attribution
+      - Server-Side Events
+    tags_raw:
       - Advertising
       - Conversion Tracking
       - Attribution
