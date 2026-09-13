@@ -45,7 +45,7 @@ image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/yahoo.png
 tags:
   - Advertising
   - Programmatic Advertising
-  - Demand-Side Platform
+  - DSP
   - Fantasy Sports
   - Sports Data
   - Identity
@@ -183,7 +183,7 @@ apis:
     tags:
       - Advertising
       - Programmatic Advertising
-      - Demand-Side Platform
+      - DSP
       - Campaign Management
     tags_raw:
       - Advertising
@@ -224,7 +224,7 @@ apis:
       - Advertising
       - Reporting
       - Analytics
-      - Demand-Side Platform
+      - DSP
     tags_raw:
       - Advertising
       - Reporting
