@@ -1,7 +1,9 @@
 ---
 title: Introducing Yahoo Scout, a New AI Answer Engine
 url: https://www.yahooinc.com/press/introducing-yahoo-scout-a-new-ai-answer-engine
-date: '2026-05-25'
+published: ''
+date_basis: harvested
+harvested: '2026-05-25'
 query: '"Yahoo" press release artificial intelligence'
 position: 1
 source: serpapi-google

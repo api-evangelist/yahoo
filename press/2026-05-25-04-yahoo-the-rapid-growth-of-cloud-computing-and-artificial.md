@@ -1,7 +1,9 @@
 ---
 title: Yahoo - The rapid growth of cloud computing and artificial ...
 url: https://www.facebook.com/yahoofinance/photos/the-rapid-growth-of-cloud-computing-and-artificial-intelligence-has-fueled-deman/1084123300249114/
-date: '2026-05-25'
+published: ''
+date_basis: harvested
+harvested: '2026-05-25'
 query: '"Yahoo" press release artificial intelligence'
 position: 4
 source: serpapi-google
