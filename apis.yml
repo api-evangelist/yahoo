@@ -74,6 +74,8 @@ url: >-
   https://raw.githubusercontent.com/api-evangelist/yahoo/refs/heads/main/apis.yml
 specificationVersion: '0.23'
 common:
+  - type: FinOps
+    url: finops/yahoo-finops.yml
   - type: Website
     url: https://www.yahoo.com/
   - type: DeveloperPortal
