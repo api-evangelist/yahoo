@@ -1,4 +1,4 @@
-# Yahoo (yahoo)
+# Yahoo
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -64,43 +64,123 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-The Fantasy Sports APIs provide URIs used to access fantasy sports data. Currently the APIs support retrieval of Fantasy Football, Baseball, Basketball, and Hockey data including game, league, team, and player information. The APIs are based on a RESTful model. Therefore, resources like game, league, team, player etc. and collections like games, leagues, teams, players form the building blocks for these APIs. Each resource is identified by a resource ID, and a collection is identified by its scope, specified in the URI. 
+Yahoo is a consumer internet and advertising-technology company operating Yahoo Mail, Yahoo Finance, Yahoo Sports and Yahoo Search alongside one of the largest independent demand-side platforms in programmatic advertising. Its public API surface splits cleanly in two. On the consumer side, the Yahoo Fantasy Sports API exposes fantasy football, baseball, basketball and hockey game, league, team, player, roster and transaction data over a composed URI tree at fantasysports.yahooapis.com, secured by a three-legged OAuth 2.0 flow against the Yahoo identity service, which itself publishes a full OpenID Connect discovery document. On the enterprise side, Yahoo Ad Tech ships the DSP Traffic API for programmatic campaign management, the DSP Reporting API for large-scale campaign measurement, the server-to-server Yahoo Conversion API, and the DataX API for audience and taxonomy exchange with data partners - all gated behind an existing DSP seat or a partner onboarding agreement and authenticated with a two-legged client-credentials JWT flow. Yahoo publishes no OpenAPI for any of these surfaces, distributing a public Postman collection and an llms.txt documentation index instead.
 
-**URL:** [Visit APIs.json URL](https://raw.githubusercontent.com/api-evangelist/yahoo/refs/heads/main/apis.yml)
+**Areas:** Advertising · Programmatic Advertising · DSP · Fantasy Sports · Sports Data · Identity · OpenID Connect · Authentication · Audience Data · Media · Reporting · Conversion Tracking
 
-## Scope
+## Yahoo on APIs.io
 
-- **Type:** Index 
-- **Position:** Consuming 
-- **Access:** 3rd-Party 
+Everything profiled for Yahoo is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/yahoo/](https://apis.io/providers/yahoo/)** — or go straight to one of the APIs or properties below.
 
-## Tags:
+### APIs (5)
 
- - API
+- [Yahoo Fantasy Sports API](https://apis.io/apis/yahoo/yahoo/) — The Fantasy Sports APIs provide URIs used to access fantasy sports data, supporting retrieval of Fantasy Football, Baseball, Basketball and Hockey data…
+- [Yahoo DSP Traffic API](https://apis.io/apis/yahoo/dsp-traffic-api/) — RESTful campaign-management API for the Yahoo demand-side platform. Exposes the full trafficking hierarchy - seats, account groups, advertisers, campaigns,…
+- [Yahoo DSP Reporting API](https://apis.io/apis/yahoo/dsp-reporting-api/) — Asynchronous large-scale reporting API for Yahoo DSP campaign data. A Reporting object - composed of reportOption, limitSpec, filterOption, having and spec…
+- [Yahoo Conversion API](https://apis.io/apis/yahoo/conversion-api/) — Server-to-server conversion-event API (CAPI) for campaign measurement, attribution and optimization, positioned as the successor to browser-side Dot Pixel…
+- [Yahoo Ad Tech DataX API](https://apis.io/apis/yahoo/datax-api/) — Partner-facing data-exchange API for uploading and managing audience taxonomies, user and audience membership, fees and measurement feeds, plus a Real-Time…
 
-## Timestamps
+### Published properties
 
-- **Created:** 2025-02-08 
-- **Modified:** 2026-03-16 
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-## APIs
+#### Security (3)
 
-### Yahoo
-The Fantasy Sports APIs provide URIs used to access fantasy sports data. Currently the APIs support retrieval of Fantasy Football, Baseball, Basketball, and Hockey data including game, league, team, and player information. The APIs are based on a RESTful model. Therefore, resources like game, league, team, player etc. and collections like games, leagues, teams, players form the building blocks for these APIs. Each resource is identified by a resource ID, and a collection is identified by its scope, specified in the URI. 
+Authentication, trust centre, and vulnerability disclosure.
 
-**Human URL:** [ https://developer.yahoo.com/fantasysports/guide/]( https://developer.yahoo.com/fantasysports/guide/)
+- [Yahoo Authentication](https://apis.io/security/yahoo/yahoo-authentication/)
+- [Yahoo Domain Security](https://apis.io/security/yahoo/yahoo-domain-security/)
+- [Yahoo Vulnerability Disclosure](https://apis.io/security/yahoo/yahoo-vulnerability-disclosure/)
 
+#### OAuth scopes (1)
 
-#### Tags:
+The permissions the API asks for.
 
- - API
+- [Yahoo Scopes](https://apis.io/scopes/yahoo/yahoo-scopes/)
 
-#### Properties
+#### Plans and pricing (1)
 
-- [Documentation]( https://developer.yahoo.com/fantasysports/guide/)
+Published plans, tiers and prices.
 
-## Maintainers
+- [Yahoo Plans Pricing](https://apis.io/plans/yahoo/yahoo-plans-pricing/)
 
-**FN:** Kin Lane
+#### Rate limits (1)
 
-**Email:** kin@apievangelist.com
+Published request limits.
+
+- [Yahoo Rate Limits](https://apis.io/rate-limits/yahoo/yahoo-rate-limits/)
+
+#### FinOps (1)
+
+What the API costs to run, by operation.
+
+- [Yahoo Finops](https://apis.io/finops/yahoo/yahoo-finops/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://www.yahoo.com/)
+- [Documentation](https://developer.yahoo.com/api/)
+- [Getting started](https://developer.yahoo.com/oauth2/guide/)
+- [Sign up](https://developer.yahoo.com/apps/create/)
+- [Support](https://yahoo.uservoice.com/forums/182455-yahoo-developer-network)
+- [Blog](https://developer.yahoo.com/blogs/)
+- [Terms of service](https://policies.yahoo.com/us/en/yahoo/terms/product-atos/apiforydn/index.htm)
+- [Privacy policy](https://legal.yahoo.com/us/en/yahoo/privacy/products/developer/index.html)
+- [GitHub](https://github.com/yahoo)
+
+## API Evangelist rating
+
+**Kin Score 41.4** — developing · rubric 0.25.0 · scored 2026-10-23
+
+| Facet | Score |
+|---|---|
+| Discoverability | 78.6 |
+| Contract quality | 0.0 |
+| Contract governance | 18.2 |
+| Operational transparency | 68.4 |
+| Developer ergonomics | 59.5 |
+| Access clarity | 34.2 |
+
+**Agent readiness 16.2** — agent-aware
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | — |
+| Agentic Access | — |
+| Reversibility Documented | — |
+| MCP Server | — |
+| Auth Clarity | served (partial credit) |
+| Idempotency | — |
+| Error Semantics | documented (partial credit) |
+| OpenAPI Examples | — |
+| Rate Limit Signal | documented (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | — |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | served (partial credit) |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+| Pagination Ratio | na |
+| Operation Distinctiveness | na |
+
+**Regulatory alignment 40.2** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/yahoo/](https://apis.io/providers/yahoo/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Yahoo: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/yahoo/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
